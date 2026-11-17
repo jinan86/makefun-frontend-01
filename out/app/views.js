@@ -135,7 +135,7 @@ export function profile(p) {
   const pic = `https://make.fun/api/profiles/${encodeURIComponent(p.handle)}/picture.png`;
   return `<p class="crumb"><a href="#/rankings">Rankings</a></p>
   <div class="profile-head">
-    <img src="${pic}" alt="" width="72" height="72" loading="lazy" onerror="this.style.display='none'">
+    <img src="${pic}" alt="" width="72" height="72" loading="lazy">
     <div><h1 tabindex="-1">${esc(p.display_name ?? `@${p.handle}`)}</h1>
     <p class="lede">@${esc(p.handle)}${p.github_login ? ` · GitHub <a href="https://github.com/${encodeURIComponent(p.github_login)}" rel="noopener">@${esc(p.github_login)}</a>` : ''} · joined ${date(p.joined_at)}</p></div>
   </div>

@@ -60,6 +60,11 @@ async function render(keepScroll = false) {
   }
   const h1 = app.querySelector('h1');
   if (h1 && !keepScroll) h1.focus({ preventScroll: true });
+  // Hide a profile picture that fails to load (no inline on* handlers: the
+  // finalist review disqualifies code in an on* attribute).
+  app.querySelectorAll('.profile-head img').forEach((img) => {
+    img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+  });
   window.scrollTo(0, keepScroll ? y : 0);
   window.__shotReady = true;
 }
