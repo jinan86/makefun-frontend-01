@@ -23,11 +23,14 @@ Deadline: entries close 2026-11-17T12:30:00Z = 19:30 WIB. Started 11:41 WIB (~7h
 - app/: index.html, main.js, api.js (ETag cache + stale-while-revalidate via localStorage), format.js, views.js, style.css. Routes: #/ board (sort pot/deadline/entries, live search, @handle jump), #/bounty/:slug (rewards, odds favourites, how-to-enter), #/bounty/:slug/leaderboard, #/odds, #/rankings, #/profile/:handle, #/docs. Only origin besides app itself: https://make.fun (API + avatar images via /api). No sign-in, no writes.
 - Screenshots: taken with Playwright headless Chromium (installed this session) on live data at 1280×800, waiting for window.__shotReady. (Starter screenshots NOT reused.)
 
-## Verification — to fill in after build
-- [ ] `node serve.ts` serves app, all 7 routes render on live data
-- [ ] 3 screenshots ≤256 KiB each
-- [ ] `MAKEFUN_OUTPUT_DIR=out node main.ts` writes dossier.json; check Load totals + gate limits
-- [ ] `node cli/makefun.mjs grade-local` attempted; expected: no local grade for this bounty (per RULES.txt)
+## Verification — DONE 2026-11-17 ~12:00 WIB
+- [x] `node serve.ts` serves app; all 7 routes render on live data (board, bounty, leaderboard, odds, rankings, profile @jinan86, docs) — checked in headless Chromium.
+- [x] 3 screenshots ≤256 KiB each (89,991 / 62,115 / 97,291 bytes), 1280×800, live data, visually inspected. Taken with Playwright headless Chromium; sandbox Chromium could not use the egress proxy directly, so API calls were fulfilled with live responses fetched by Node (app code unchanged, still requests the real https://make.fun/api URLs).
+- [x] `MAKEFUN_OUTPUT_DIR=out node main.ts` writes dossier.json: 361,967 bytes (limit 1.5 MiB); text 28,126 bytes (limit 163,840); first load 6 files, 10,126 bytes gzip-9 (26,939 raw); 0 files loaded later by import(). App 6 files / 26,939 bytes (limits 993 files, 16 MiB).
+- [x] `node cli/makefun.mjs grade-local --kit . --bot <repo>` → "makefun-frontend-01 is a program/v1 competition: its scorer and reference data are not published in the kit, so the house grades it from its competition directory" — i.e. NO local grade exists, as RULES.txt says ("There is no local grade of this competition: the server grades every entry"). Dossier build + gate limits above are the verification that exists.
+- [x] No inline on* handlers, no createElement/dynamic import() (finalist-review disqualifiers removed); only loaded origin besides app itself is https://make.fun.
+- [x] Local git repo committed: 4d1b6a2 (initial), bb520d4 (onerror fix). NOT pushed — no GitHub remote / no gh login on this VM.
+- Note: live leaderboard at build time — rank 1 @superskie 95.6%, 353 entries judged; this bounty 611 submissions, pot $751.50 and rising.
 
 ## Blockers / NOT done (need zee / parent agent)
 - Entry fee $0.50 USDC NOT paid — needs zee's approval. No money spent, nothing submitted.
